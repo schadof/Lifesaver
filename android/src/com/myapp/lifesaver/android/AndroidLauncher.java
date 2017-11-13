@@ -15,7 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -26,9 +26,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class AndroidLauncher extends AppCompatActivity {
 
-	Display display = getWindowManager().getDefaultDisplay();
-	int width = display.getWidth();
-	int height = display.getHeight();
+	DisplayMetrics metrics = new DisplayMetrics();
 
 	SpriteBatch batch;
 	OrthographicCamera camera;
@@ -103,11 +101,11 @@ public class AndroidLauncher extends AppCompatActivity {
 
 		World world = new World(new Vector2(0, 9.8f), false);
 
-		create();
+		//create();
 
 		createSpikes(world);
 
-		render();
+		//render();
 
 
 
@@ -141,7 +139,7 @@ public class AndroidLauncher extends AppCompatActivity {
 		Body body;
 		BodyDef def = new BodyDef();
 		def.type = BodyDef.BodyType.StaticBody;
-		def.position.set(width, height);
+		def.position.set(metrics.widthPixels, metrics.heightPixels);
 		body = world.createBody(def);
 
 		PolygonShape shape = new PolygonShape();
@@ -171,7 +169,7 @@ public class AndroidLauncher extends AppCompatActivity {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(spike, width, height);
+		batch.draw(spike, metrics.widthPixels, metrics.heightPixels);
 		batch.end();
 	}
 
