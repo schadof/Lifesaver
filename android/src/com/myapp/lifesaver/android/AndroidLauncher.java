@@ -1,19 +1,40 @@
 package com.myapp.lifesaver.android;
-import com.myapp.lifesaver.Lifesaver;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import android.annotation.SuppressLint;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
+import android.view.Display;
 import android.view.View;
+
+import javax.microedition.khronos.opengles.GL10;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class AndroidLauncher extends AppCompatActivity {
+
+	Display display = getWindowManager().getDefaultDisplay();
+	int width = display.getWidth();
+	int height = display.getHeight();
+
+	SpriteBatch batch;
+	OrthographicCamera camera;
+
+	Texture spike;
+
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -80,6 +101,15 @@ public class AndroidLauncher extends AppCompatActivity {
 		mContentView = findViewById(R.id.fullscreen_content);
 		hide();
 
+		World world = new World(new Vector2(0, 9.8f), false);
+
+		create();
+
+		createSpikes(world);
+
+		render();
+
+
 
 	}
 
@@ -106,13 +136,44 @@ public class AndroidLauncher extends AppCompatActivity {
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
 		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
 	}
-}
 
-//public class AndroidLauncher extends AndroidApplication {
-//	@Override
-//	protected void onCreate (Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//		initialize(new Lifesaver(), config);
-//	}
-//}
+	public Body createSpikes(World world){
+		Body body;
+		BodyDef def = new BodyDef();
+		def.type = BodyDef.BodyType.StaticBody;
+		def.position.set(width, height);
+		body = world.createBody(def);
+
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(1, 1);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 0.1f;
+		body.createFixture(fixtureDef).setUserData(this);
+		body.setLinearVelocity(20, 0);
+		shape.dispose();
+
+		return(body);
+	}
+
+	public void create() {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
+
+		batch = new SpriteBatch();
+		spike = new Texture(Gdx.files.internal("spike.png"));
+	}
+
+	public void render() {
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		batch.draw(spike, width, height);
+		batch.end();
+	}
+
+
+}
