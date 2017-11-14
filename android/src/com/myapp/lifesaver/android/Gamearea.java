@@ -22,6 +22,7 @@ public class Gamearea {
     public void Gamearea(){
         createWorld();
         createSpikes();
+        createHenry();
     }
 
     public void createSpikes(){
@@ -32,7 +33,7 @@ public class Gamearea {
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(metrics.widthPixels, 1);
+        shape.setAsBox(metrics.widthPixels, 100);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -47,11 +48,11 @@ public class Gamearea {
         Body body;
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
-        def.position.set(1, metrics.heightPixels);
+        def.position.set(metrics.widthPixels/2, metrics.heightPixels/2);
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(metrics.widthPixels, 1);
+        shape.setAsBox(100, 100);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -65,7 +66,7 @@ public class Gamearea {
         world = new World(new Vector2(0, 9.8f), false);
     }
 
-    public void Update(float dt){
+    public void update(float dt){
         accumulator+=dt;
         while(accumulator>BOX_STEP){
             world.step(BOX_STEP,BOX_VELOCITY_ITERATIONS,BOX_POSITION_ITERATIONS);
