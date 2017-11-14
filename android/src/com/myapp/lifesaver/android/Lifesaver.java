@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
 
 
 /**
@@ -110,5 +111,11 @@ public class Lifesaver extends AppCompatActivity {
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
 		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
 	}
+
+	public void renderSpike(){
+		setContentView(R.layout.activity_lifesaver);
+		ImageView v = (ImageView)findViewById(R.id.spikeArea);
+	}
+
 
 }
