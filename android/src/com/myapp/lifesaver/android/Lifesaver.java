@@ -1,13 +1,13 @@
 package com.myapp.lifesaver.android;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+
 import android.annotation.SuppressLint;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+
 
 
 /**
@@ -109,6 +109,10 @@ public class Lifesaver extends AppCompatActivity {
 		// Schedule a runnable to remove the status and navigation bar after a delay
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
 		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+	}
+
+	void render() {
+
 	}
 
 }
