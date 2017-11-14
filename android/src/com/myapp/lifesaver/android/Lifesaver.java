@@ -81,13 +81,13 @@ public class Lifesaver extends AppCompatActivity {
 		setContentView(R.layout.activity_lifesaver);
 
 		mVisible = true;
-		mControlsView = findViewById(R.id.fullscreen_content_controls);
+		mControlsView = findViewById(R.id.lifeSaverScreen);
 		mContentView = findViewById(R.id.SpikeArea);
 		hide();
 
 		Gamearea gamearea = new Gamearea();
 		renderTime();
-		//renderSpike();
+		renderSpike();
 
 	}
 
@@ -119,27 +119,21 @@ public class Lifesaver extends AppCompatActivity {
 		setContentView(R.layout.activity_lifesaver);
 		Bitmap b;
 		b = Bitmap.createBitmap(900, 100, Bitmap.Config.ARGB_8888);
-		//c = new Canvas(b);
-		//wir holen die im XML deklarierte ImageView
 		ImageView v = (ImageView)findViewById(R.id.SpikeArea);
-		//und ersetzen alle Farbe mit Blau (zumindest laut dokumentation, das Resultat ist jedenfalls rot)
+
 		b.eraseColor(Color.RED);
 
-		//dann geben wir der View das Bitmap
 		v.setImageBitmap(b);
 	}
 
 
 	public void renderTime(){
+		setContentView(R.layout.activity_lifesaver);
 		Bitmap b;
 		b = Bitmap.createBitmap(500, 100, Bitmap.Config.ARGB_8888);
-		//c = new Canvas(b);
-		//wir holen die im XML deklarierte ImageView
 		ImageView v = (ImageView)findViewById(R.id.timeArea);
-		//und ersetzen alle Farbe mit Blau (zumindest laut dokumentation, das Resultat ist jedenfalls rot)
 		b.eraseColor(Color.RED);
 
-		//dann geben wir der View das Bitmap
 		v.setImageBitmap(b);
 
 	}
