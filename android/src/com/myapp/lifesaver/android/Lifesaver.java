@@ -1,10 +1,9 @@
 package com.myapp.lifesaver.android;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +17,13 @@ import android.widget.ImageView;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Lifesaver extends AppCompatActivity {
+	Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			GameArea.HenryMsg henryMsg = (GameArea.HenryMsg)msg.obj;
+			System.out.println(henryMsg);
+		}
+	};
 
 	/**
 	 * Whether or not the system UI should be auto-hidden after
@@ -85,7 +91,8 @@ public class Lifesaver extends AppCompatActivity {
 		mContentView = findViewById(R.id.SpikeArea);
 		hide();
 
-		Gamearea gamearea = new Gamearea();
+		GameArea gameArea = new GameArea(this, handler);
+		gameArea.start();
 		renderTime();
 		renderSpike();
 
