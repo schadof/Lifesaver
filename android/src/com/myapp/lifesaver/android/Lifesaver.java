@@ -24,7 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class AndroidLauncher extends AppCompatActivity {
+public class Lifesaver extends AppCompatActivity {
 
 	DisplayMetrics metrics = new DisplayMetrics();
 
