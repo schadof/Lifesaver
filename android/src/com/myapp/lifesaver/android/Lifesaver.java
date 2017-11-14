@@ -3,6 +3,8 @@ package com.myapp.lifesaver.android;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -80,11 +82,12 @@ public class Lifesaver extends AppCompatActivity {
 
 		mVisible = true;
 		mControlsView = findViewById(R.id.fullscreen_content_controls);
-		mContentView = findViewById(R.id.fullscreen_content);
+		mContentView = findViewById(R.id.SpikeArea);
 		hide();
 
 		Gamearea gamearea = new Gamearea();
-
+		renderTime();
+		//renderSpike();
 
 	}
 
@@ -114,8 +117,31 @@ public class Lifesaver extends AppCompatActivity {
 
 	public void renderSpike(){
 		setContentView(R.layout.activity_lifesaver);
-		ImageView v = (ImageView)findViewById(R.id.spikeArea);
+		Bitmap b;
+		b = Bitmap.createBitmap(900, 100, Bitmap.Config.ARGB_8888);
+		//c = new Canvas(b);
+		//wir holen die im XML deklarierte ImageView
+		ImageView v = (ImageView)findViewById(R.id.SpikeArea);
+		//und ersetzen alle Farbe mit Blau (zumindest laut dokumentation, das Resultat ist jedenfalls rot)
+		b.eraseColor(Color.RED);
+
+		//dann geben wir der View das Bitmap
+		v.setImageBitmap(b);
 	}
 
+
+	public void renderTime(){
+		Bitmap b;
+		b = Bitmap.createBitmap(500, 100, Bitmap.Config.ARGB_8888);
+		//c = new Canvas(b);
+		//wir holen die im XML deklarierte ImageView
+		ImageView v = (ImageView)findViewById(R.id.timeArea);
+		//und ersetzen alle Farbe mit Blau (zumindest laut dokumentation, das Resultat ist jedenfalls rot)
+		b.eraseColor(Color.RED);
+
+		//dann geben wir der View das Bitmap
+		v.setImageBitmap(b);
+
+	}
 
 }
