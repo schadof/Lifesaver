@@ -1,16 +1,23 @@
 package com.myapp.lifesaver.android;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+
+import java.io.File;
 
 
 /**
@@ -115,27 +122,44 @@ public class Lifesaver extends AppCompatActivity {
 		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
 	}
 
+
+	public void renderHenry(){
+		ImageView v = findViewById(R.id.HenryArea);
+
+		/**File imgFile = new  File(R.drawable.Download);
+		if(imgFile.exists()){
+			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			//Drawable d = new BitmapDrawable(getResources(), myBitmap);
+			ImageView myImage = (ImageView) findViewById(R.id.imageviewTest);
+			myImage.setImageBitmap(myBitmap);
+
+		}
+
+		Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.image);
+		v.draw(c);
+		 */
+	}
+
 	public void renderSpike(){
 		setContentView(R.layout.activity_lifesaver);
-		Bitmap b;
-		b = Bitmap.createBitmap(900, 100, Bitmap.Config.ARGB_8888);
+
+		Bitmap b = Bitmap.createBitmap(900, 100, Bitmap.Config.ARGB_8888);
 		ImageView v = (ImageView)findViewById(R.id.SpikeArea);
-
-		b.eraseColor(Color.RED);
-
 		v.setImageBitmap(b);
+
 	}
 
 
 	public void renderTime(){
 		setContentView(R.layout.activity_lifesaver);
 		Bitmap b;
-		b = Bitmap.createBitmap(500, 100, Bitmap.Config.ARGB_8888);
+		b = Bitmap.createBitmap(500, 50, Bitmap.Config.ARGB_8888);
 		ImageView v = (ImageView)findViewById(R.id.timeArea);
-		b.eraseColor(Color.RED);
+		b.eraseColor(Color.GRAY);
 
 		v.setImageBitmap(b);
 
 	}
+
 
 }
