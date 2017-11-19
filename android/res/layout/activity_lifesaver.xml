@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lifeSaverScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:id="@+id/lifeSaverScreen"
     android:orientation="vertical"
     tools:context="com.myapp.lifesaver.android.Lifesaver">
 
@@ -23,77 +23,85 @@
         android:background="#bcbcbc" />
         -->
     <ImageView
+        android:id="@+id/SpikeArea"
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:layout_marginLeft="15px"
-        android:id="@+id/SpikeArea"
         android:background="@drawable/spike"
-        android:tileMode="mirror"
-        android:dither="true"/>
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea2"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea3"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea2"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea4"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea3"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea5"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea4"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea6"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea5"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea7"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea6"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
+
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="50dp"
         android:id="@+id/SpikeArea8"
-        android:background="@drawable/spike"
-        android:tileMode="mirror"
-        android:layout_toRightOf="@+id/SpikeArea7"
-        android:dither="true"/>
-    <ImageView
         android:layout_width="40dp"
         android:layout_height="50dp"
-        android:id="@+id/SpikeArea9"
+        android:layout_toRightOf="@+id/SpikeArea7"
         android:background="@drawable/spike"
-        android:tileMode="mirror"
+        android:dither="true"
+        android:tileMode="mirror" />
+
+    <ImageView
+        android:id="@+id/SpikeArea9"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/SpikeArea8"
-        android:dither="true"/>
+        android:background="@drawable/spike"
+        android:dither="true"
+        android:tileMode="mirror" />
 
     <!--
 android:layout_alignParentTop="true"
@@ -102,36 +110,36 @@ android:layout_alignParentStart="true"
 -->
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300sp"
         android:id="@+id/HenryArea"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/SpikeArea"
-        android:tint="#999999"/>
+        android:tint="#999999" />
+
     <ImageView
+        android:id="@+id/timeArea"
         android:layout_width="match_parent"
         android:layout_height="20sp"
-        android:layout_below="@+id/HenryArea"
-        android:id="@+id/timeArea" />
+        android:layout_below="@+id/HenryArea" />
+
     <ImageView
+        android:id="@+id/AirArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeArea"
-        android:id="@+id/AirArea"
-        android:tint="#FF0000"/>
+        android:tint="#FF0000" />
 
 
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:progress="25"
-            style="@style/CustomProgressBar"
-            android:layout_margin="5dip"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_below="@+id/AirArea"
-            android:layout_marginBottom="5dp"/>
-
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="@style/CustomProgressBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AirArea"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_margin="5dip"
+        android:layout_marginBottom="5dp"
+        android:progress="25" />
 
 
 </RelativeLayout>

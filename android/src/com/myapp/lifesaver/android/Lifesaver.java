@@ -1,10 +1,12 @@
 package com.myapp.lifesaver.android;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Message;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -86,6 +88,11 @@ public class Lifesaver extends AppCompatActivity {
 	 * while interacting with activity UI.
 	 */
 
+	//variables
+    Canvas henrycanvas;
+    Resources res;
+    Bitmap henry;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,6 +109,8 @@ public class Lifesaver extends AppCompatActivity {
 		renderTime();
 		renderSpike();
 
+		//render henry does not work yet
+        //renderHenry();
 	}
 
 	@Override
@@ -130,20 +139,18 @@ public class Lifesaver extends AppCompatActivity {
 
 
 	public void renderHenry(){
-		ImageView v = findViewById(R.id.HenryArea);
+	    ImageView v = findViewById(R.id.HenryArea);
+        res = getResources();
+        henry = BitmapFactory.decodeResource(res,R.drawable.henrysmall);
+        Paint henrypaint = new Paint();
 
-		/**File imgFile = new  File(R.drawable.Download);
-		if(imgFile.exists()){
-			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-			//Drawable d = new BitmapDrawable(getResources(), myBitmap);
-			ImageView myImage = (ImageView) findViewById(R.id.imageviewTest);
-			myImage.setImageBitmap(myBitmap);
+        Bitmap tempBitmap = Bitmap.createBitmap(henry.getWidth(), henry.getHeight(), Bitmap.Config.RGB_565);
+        Canvas tempCanvas = new Canvas(tempBitmap);
+        tempCanvas.drawBitmap(henry, henrycanvas.getWidth()/2,henrycanvas.getHeight()/2, henrypaint);
+        //henrycanvas = new Canvas(henry);
+        //henrycanvas.drawBitmap(henry, henrycanvas.getWidth()/2,henrycanvas.getHeight()/2, null);
+		v.draw(tempCanvas);
 
-		}
-
-		Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.image);
-		v.draw(c);
-		 */
 	}
 
 	public void renderSpike(){
@@ -155,6 +162,10 @@ public class Lifesaver extends AppCompatActivity {
 
 	}
 
+
+	public void rotateHenry(float angle){
+
+    }
 
 	public void renderTime(){
 		setContentView(R.layout.activity_lifesaver);
