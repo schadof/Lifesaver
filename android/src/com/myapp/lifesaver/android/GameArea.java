@@ -36,9 +36,9 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
 
     DisplayMetrics metrics = new DisplayMetrics();
 
-    public GameArea(Context context, Handler handler){
+    public GameArea(Context context, Handler handler, Vector2 metrics){
         this.handler = handler;
-        world = new World(new Vector2(0, 9.8f), false);
+        world = new World(new Vector2(0, 0f), false);
         world.setContactListener(this);
         spikes = createSpikes(world, metrics);
         henry = createHenry(world, metrics);
@@ -46,7 +46,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         RopeJointDef ropeJointDef = new RopeJointDef();
         ropeJointDef.bodyA = spikes;
         ropeJointDef.bodyB = henry;
-        ropeJointDef.maxLength = metrics.heightPixels / 2;
+        ropeJointDef.maxLength = metrics.y/2;
 
         joint = world.createJoint(ropeJointDef);
 
@@ -81,15 +81,15 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         }
     }
 
-    private static Body createSpikes(World world, DisplayMetrics metrics){
+    private static Body createSpikes(World world, Vector2 metrics){
         Body body;
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
-        def.position.set(0, metrics.heightPixels);
+        def.position.set(0, metrics.y);
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(metrics.widthPixels, 100);
+        shape.setAsBox(metrics.x, metrics.y/10);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -102,16 +102,16 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
     }
 
 
-    private static Body createHenry(World world, DisplayMetrics metrics){
+    private static Body createHenry(World world, Vector2 metrics){
         Body body;
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.fixedRotation = false;
-        def.position.set(metrics.widthPixels/2, metrics.heightPixels/2);
+        def.position.set(metrics.x/2, metrics.y/2);
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(100, 100);
+        shape.setAsBox(metrics.x/10, metrics.y/10);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -134,6 +134,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
     @Override
     public void beginContact(Contact contact) {
         //set to gameover screen
+        System.out.println("DEAD");
     }
 
     @Override

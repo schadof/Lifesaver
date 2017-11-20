@@ -1,10 +1,12 @@
 package com.myapp.lifesaver.android;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Message;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,8 +14,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.File;
 
@@ -23,6 +29,10 @@ import java.io.File;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Lifesaver extends AppCompatActivity {
+
+	Vector2 metrics;
+
+
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -97,7 +107,12 @@ public class Lifesaver extends AppCompatActivity {
 		mContentView = findViewById(R.id.SpikeArea);
 		hide();
 
-		GameArea gameArea = new GameArea(this, handler);
+
+
+		metrics = new Vector2(10, 10);
+		System.out.println(metrics);
+
+		GameArea gameArea = new GameArea(this, handler, metrics);
 		gameArea.start();
 		renderTime();
 		renderSpike();
@@ -131,6 +146,7 @@ public class Lifesaver extends AppCompatActivity {
 
 	public void renderHenry(){
 		ImageView v = findViewById(R.id.HenryArea);
+
 
 		/**File imgFile = new  File(R.drawable.Download);
 		if(imgFile.exists()){
