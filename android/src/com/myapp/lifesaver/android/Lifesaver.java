@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Message;
@@ -31,15 +32,11 @@ import java.io.File;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Lifesaver extends AppCompatActivity {
-
-	Vector2 metrics;
-
-
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			GameArea.HenryMsg henryMsg = (GameArea.HenryMsg)msg.obj;
-			System.out.println(henryMsg);
+			renderHenry(henryMsg.pos);
 		}
 	};
 
@@ -60,38 +57,7 @@ public class Lifesaver extends AppCompatActivity {
 	 * and a change of the status and navigation bar.
 	 */
 	private static final int UI_ANIMATION_DELAY = 300;
-	private final Handler mHideHandler = new Handler();
-	private View mContentView;
-	private final Runnable mHidePart2Runnable = new Runnable() {
-		@SuppressLint("InlinedApi")
-		@Override
-		public void run() {
-			// Delayed removal of status and navigation bar
 
-			// Note that some of these constants are new as of API 16 (Jelly Bean)
-			// and API 19 (KitKat). It is safe to use them, as they are inlined
-			// at compile-time and do nothing on earlier devices.
-			mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-					| View.SYSTEM_UI_FLAG_FULLSCREEN
-					| View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-		}
-	};
-	private View mControlsView;
-	private final Runnable mShowPart2Runnable = new Runnable() {
-		@Override
-		public void run() {
-			// Delayed display of UI elements
-			ActionBar actionBar = getSupportActionBar();
-			if (actionBar != null) {
-				actionBar.show();
-			}
-			mControlsView.setVisibility(View.VISIBLE);
-		}
-	};
-	private boolean mVisible;
 	/**
 	 * Touch listener to use for in-layout UI controls to delay hiding the
 	 * system UI. This is to prevent the jarring behavior of controls going away
@@ -102,28 +68,32 @@ public class Lifesaver extends AppCompatActivity {
     Canvas henrycanvas;
     Resources res;
     Bitmap henry;
+    Paint henrypaint;
+    Bitmap tempBitmap;
+    Canvas tempCanvas;
+    ImageView henryView;
+    GameArea gameArea;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+        gameArea = new GameArea(this, handler);
+        gameArea.start();
 		setContentView(R.layout.activity_lifesaver);
-
-		mVisible = true;
-		mControlsView = findViewById(R.id.lifeSaverScreen);
-		mContentView = findViewById(R.id.SpikeArea);
-		hide();
+        henryView = findViewById(R.id.HenryArea);
+        hide();
 
 
+        Bitmap b = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+        b.eraseColor(Color.GRAY);
+        henryView.setImageBitmap(b);
 
-		metrics = new Vector2(10, 10);
-		System.out.println(metrics);
 
-		GameArea gameArea = new GameArea(this, handler, metrics);
-		gameArea.start();
-		renderTime();
-		renderSpike();
+        //renderTime();
+        renderHenry(new Vector2(0,0));
+        //renderSpike();
 
+        //render henry does not work yet
 	}
 
 	@Override
@@ -141,31 +111,46 @@ public class Lifesaver extends AppCompatActivity {
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.hide();
-		}
+		}/*
 		mControlsView.setVisibility(View.GONE);
 		mVisible = false;
 
 		// Schedule a runnable to remove the status and navigation bar after a delay
 		mHideHandler.removeCallbacks(mShowPart2Runnable);
-		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+		mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);*/
 	}
 
 
-	public void renderHenry(){
-	    ImageView v = findViewById(R.id.HenryArea);
+	public void renderHenry(Vector2 pos){
+        setContentView(R.layout.activity_lifesaver);
         res = getResources();
-        henry = BitmapFactory.decodeResource(res,R.drawable.henrysmall);
-        Paint henrypaint = new Paint();
+        henry = BitmapFactory.decodeResource(res,R.drawable.henrybmp);
+        //henrypaint = new Paint();
 
-        Bitmap tempBitmap = Bitmap.createBitmap(henry.getWidth(), henry.getHeight(), Bitmap.Config.RGB_565);
-        Canvas tempCanvas = new Canvas(tempBitmap);
-        tempCanvas.drawBitmap(henry, henrycanvas.getWidth()/2,henrycanvas.getHeight()/2, henrypaint);
+        tempBitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+        tempBitmap.eraseColor(Color.WHITE);
+        tempCanvas = new Canvas(tempBitmap);
+
+        Matrix rotationMatrix = new Matrix();
+        int henryBaseX=250;
+        int henryBaseY=250;
+        int henryX = (int) (henryBaseX - pos.x * 100 - henry.getWidth()/2);
+        int henryY = (int) (henryBaseY - pos.y * 100 - henry.getHeight()/2);
+        //rotationMatrix.setRotate(gameArea.henry.getPosition().x);
+        tempCanvas.drawBitmap(henry, henryX, henryY, null);
         //henrycanvas = new Canvas(henry);
         //henrycanvas.drawBitmap(henry, henrycanvas.getWidth()/2,henrycanvas.getHeight()/2, null);
-		v.draw(tempCanvas);
+		//henryView.draw(tempCanvas);
 
-	}
 
+        ImageView henV = findViewById(R.id.HenryArea);
+		//henryView.setImageDrawable(res.getDrawable(R.drawable.henrybmp));
+        henV.setImageBitmap(tempBitmap);
+		//henryView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+    }
+
+	//solved in XML
+	/*
 	public void renderSpike(){
 		setContentView(R.layout.activity_lifesaver);
 
@@ -173,19 +158,16 @@ public class Lifesaver extends AppCompatActivity {
 		ImageView v = (ImageView)findViewById(R.id.SpikeArea);
 		v.setImageBitmap(b);
 
-	}
+	}*/
 
 
-	public void rotateHenry(float angle){
-
-    }
 
 	public void renderTime(){
 		setContentView(R.layout.activity_lifesaver);
 		Bitmap b;
 		b = Bitmap.createBitmap(500, 50, Bitmap.Config.ARGB_8888);
-		ImageView v = (ImageView)findViewById(R.id.timeArea);
-		b.eraseColor(Color.GRAY);
+        ImageView v = (ImageView)findViewById(R.id.timeArea);
+        b.eraseColor(Color.GRAY);
 
 		v.setImageBitmap(b);
 

@@ -36,17 +36,19 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
 
     DisplayMetrics metrics = new DisplayMetrics();
 
-    public GameArea(Context context, Handler handler, Vector2 metrics){
+    public GameArea(Context context, Handler handler){
         this.handler = handler;
-        world = new World(new Vector2(0, 0f), false);
+        world = new World(new Vector2(0, 0), false);
         world.setContactListener(this);
-        spikes = createSpikes(world, metrics);
-        henry = createHenry(world, metrics);
+        spikes = createSpikes(world);
+        henry = createHenry(world);
 
         RopeJointDef ropeJointDef = new RopeJointDef();
         ropeJointDef.bodyA = spikes;
+        ropeJointDef.localAnchorA.set(0, 0);
         ropeJointDef.bodyB = henry;
-        ropeJointDef.maxLength = metrics.y/2;
+        ropeJointDef.localAnchorB.set(0, 1);
+        ropeJointDef.maxLength = 2;
 
         joint = world.createJoint(ropeJointDef);
 
@@ -81,19 +83,19 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         }
     }
 
-    private static Body createSpikes(World world, Vector2 metrics){
+    private static Body createSpikes(World world){
         Body body;
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
-        def.position.set(0, metrics.y);
+        def.position.set(0, 2);
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(metrics.x, metrics.y/10);
+        shape.setAsBox(4, 1);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
+        fixtureDef.isSensor = false;
 //        fixtureDef.density = 0.1f;
 //        body.setLinearVelocity(20, 0);
         body.createFixture(fixtureDef);
@@ -101,21 +103,20 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         return body;
     }
 
-
-    private static Body createHenry(World world, Vector2 metrics){
-        Body body;
+    private static Body createHenry(World world){
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.fixedRotation = false;
-        def.position.set(metrics.x/2, metrics.y/2);
-        body = world.createBody(def);
+        def.position.set(0, 0);
+        Body body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(metrics.x/10, metrics.y/10);
+        shape.setAsBox(0.5f, 1);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-//        fixtureDef.density = 0.1f;
+        fixtureDef.density = 0.01f;
+        fixtureDef.isSensor = false;
         body.createFixture(fixtureDef);
 //        body.setLinearVelocity(20, 0);
         shape.dispose();
@@ -154,7 +155,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        henry.applyForceToCenter(sensorEvent.values[0], sensorEvent.values[1], true);
+        world.setGravity(new Vector2(sensorEvent.values[0], -sensorEvent.values[1]));
     }
 
     @Override
