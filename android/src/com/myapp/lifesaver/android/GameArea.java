@@ -32,9 +32,8 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
     World world;
     Body spikes;
     Body henry;
+    Body attachmentPoint;
     Joint joint;
-
-    DisplayMetrics metrics = new DisplayMetrics();
 
     public GameArea(Context context, Handler handler){
         this.handler = handler;
@@ -42,13 +41,19 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         world.setContactListener(this);
         spikes = createSpikes(world);
         henry = createHenry(world);
+        BodyDef def = new BodyDef();
+        def.type = BodyDef.BodyType.StaticBody;
+        def.position.set(0, 4);
+        attachmentPoint = world.createBody(def);
 
         RopeJointDef ropeJointDef = new RopeJointDef();
-        ropeJointDef.bodyA = spikes;
+        ropeJointDef.bodyA = attachmentPoint;
         ropeJointDef.localAnchorA.set(0, 0);
         ropeJointDef.bodyB = henry;
         ropeJointDef.localAnchorB.set(0, 1);
-        ropeJointDef.maxLength = 2;
+        ropeJointDef.maxLength = 4;
+
+        System.out.println(spikes.getFixtureList().get(0).isSensor());
 
         joint = world.createJoint(ropeJointDef);
 
@@ -87,7 +92,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
         Body body;
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
-        def.position.set(0, 2);
+        def.position.set(0, 4);
         body = world.createBody(def);
 
         PolygonShape shape = new PolygonShape();
@@ -106,7 +111,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
     private static Body createHenry(World world){
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
-        def.fixedRotation = false;
+        def.fixedRotation = true;
         def.position.set(0, 0);
         Body body = world.createBody(def);
 
@@ -136,6 +141,7 @@ public class GameArea extends Thread implements ContactListener, SensorEventList
     public void beginContact(Contact contact) {
         //set to gameover screen
         System.out.println("DEAD");
+
     }
 
     @Override
